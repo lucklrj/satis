@@ -1,0 +1,10 @@
+#! /bin/sh
+num=`ps -e | grep reBuildIndex | wc -l`
+
+if [ $num -gt 2 ]
+then
+echo runnning
+exit
+else
+/app/satisfy/bin/satis -v -n build /app/satisfy/satis.json /app/satisfy/web/ --skip-errors
+fi

@@ -22,7 +22,7 @@ RUN sed  -e  's/<?php/<?php\nini_set("memory_limit",-1);\n/g'  /app/satis/bin/sa
 
 # Install composer-satis-builder
 ADD config/nginx/nginx.conf /usr/local/nginx/conf/
-ADD config/nginx/satisfy.conf /usr/local/nginx/conf/vhost/
+ADD config/nginx/satis.conf /usr/local/nginx/conf/vhost/
 
 
 

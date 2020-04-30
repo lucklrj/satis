@@ -6,5 +6,5 @@ then
 echo runnning
 exit
 else
-/app/satisfy/bin/satis -v -n build /app/satisfy/satis.json /app/satisfy/web/ --skip-errors
+/app/satis/bin/satis -v -n build /app/satis/satis.json /app/satis/web/
 fi

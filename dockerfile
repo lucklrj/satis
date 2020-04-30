@@ -12,22 +12,20 @@ RUN chmod +x /app/start.sh &&  ln -s  /usr/local/php/bin/php /usr/bin/
 #timezone
 RUN rm -f /etc/localtime && ln -sv /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" > /etc/timezone
 
-RUN   yum install -y zip unzip git
+RUN yum install -y git
+# Install satis
+RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
+RUN composer create-project composer/satis
+RUN composer create-project lucklrj/composer-satis-builder
 
-#RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-#RUN export COMPOSER_PROCESS_TIMEOUT=600
+RUN sed  -e  's/<?php/<?php\nini_set("memory_limit",-1);\n/g'  /app/satis/bin/satis
 
-# composer config
-RUN composer config -g repo.packagist composer https://packagist.phpcomposer.com
-RUN composer config -g process-timeout 6000
-
-# Install satisfy
-RUN composer create-project playbloom/satisfy
-RUN mkdir -p /app/satisfy/var/cache && chmod 0777 /app/satisfy/var -R
-
-# init nginx
+# Install composer-satis-builder
 ADD config/nginx/nginx.conf /usr/local/nginx/conf/
 ADD config/nginx/satisfy.conf /usr/local/nginx/conf/vhost/
+
+
+
 
 #Start it
 ENTRYPOINT ["/app/start.sh"]

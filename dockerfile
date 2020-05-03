@@ -18,7 +18,7 @@ RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/compos
 RUN composer create-project composer/satis
 RUN composer create-project lucklrj/composer-satis-builder
 
-RUN sed  -e  's/<?php/<?php\nini_set("memory_limit",-1);\n/g'  /app/satis/bin/satis
+RUN sed -i 's/<?php/<?php\nini_set("memory_limit",-1);\n/g'  /app/satis/bin/satis
 
 # Install composer-satis-builder
 ADD config/nginx/nginx.conf /usr/local/nginx/conf/

@@ -20,7 +20,7 @@ RUN composer create-project lucklrj/composer-satis-builder
 
 RUN sed -i 's/<?php/<?php\nini_set("memory_limit",-1);\n/g'  /app/satis/bin/satis
 
-RUN chmod +x /app/satis/bin/satis
+RUN chmod +x /app/satis/bin/satis && chmod +x /app/composer-satis-builder/bin/*
 
 # Install composer-satis-builder
 ADD config/nginx/nginx.conf /usr/local/nginx/conf/

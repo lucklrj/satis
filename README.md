@@ -9,30 +9,53 @@ php composer的satis docker
 ### 运行docker
 ```
 docker run  --name satis \
--v /Users/lucklrj/docker/satis/disk:/app/satisfy/web/disk/ \
--v /Users/lucklrj/docker/satis/ssh:/root/.ssh \
--v /Users/lucklrj/docker/satis/satis.json:/app/satisfy/satis.json \
--p 80:80 \
--d satis:latest
+-v /your_satis_path/disk:/app/satis/web/disk/ \
+-v /your_satis_path/config:/app/config/ \
+--privileged=true \
+-d satis
 ```
 
-### 在satisfy里添加包
-https://xxx.com/admin
+### 在satis里添加包(添加require部分)：
+```
+# 该功能是将项目composer.json中的require部分合并到satis.json里，需要指定satis.json,composer.json的位置
+/app/composer-satis-builder/bin/merge-requirements 
+
+vi /app/composer-satis-builder/bin/merge-requirements 
+
+#! /bin/bash
+php composer-satis-builder build ./satis.json ./composer.json --merge-requirements
+
+#建议将satis.json,composer.json都放放在/app/config里
+```
+
+### 在satis里添加库(添加repositories部分，目前只支持git)：
+
+```
+/app/composer-satis-builder/bin/merge-requirements git:http://your-gitlab/xx/yy.git
+
+# 同样需要指定satis.json,composer.json的位置
+#! /bin/bash
+php composer-satis-builder buil ./satis.json ./composer.json --merge-repositories=$1
+~
+```
+
+
 
 ###  生成索引
 ```
-/app/satisfy/bin/satis -v -n build /app/satisfy/satis.json /app/satisfy/web/
+/app/config/reBuildIndex
+# 同样需要指定satis.json,composer.json的位置
 ```
 
-### 坑
-- 依赖较多的包，比如laraval要运行很久，基本很难创建索引成功，只有不停的重试，碰运气。
+### 其他
+- 依赖较多的包，比如laraval要运行很久，这是正常现象。
 - 包索引文件较多时，php会报错，
 ```
 Fatal error: Allowed memory size of 134217728 bytes exhausted (tried to allocate 4096 bytes)
 ```
-在/app/satisfy/bin/satis 第3行下插入代码：
+在/app/satis/bin/satis 第3行下插入代码：
 ```
-ini_set("memory_limit", -1);
+ini_set("memory_limit", -1);# docker里已经默认加上了这一步，如果被操作系统Killed,需要调小，一般2G比较合适
 ```
-- 手动运行创建新的索引脚本，没有像其他docker那样加到crontab里（基本拉起很多重复任务直接造成资源消耗过多。系统卡死）。
-- require-dev-dependencies=true时，会解析require-dev的包，有些应用包已经在github.com删除了，会导致建立索引失败，脚本自动退出。
+- 手动运行创建新的索引脚本，没有像其他docker那样加到crontab里。
+- require-dev-dependencies=true时，会解析require-dev的包，有些应用包已经在github.com删除了，会导致建立索引失败，脚本自动退出（阿里云，腾讯云也有404的包)。

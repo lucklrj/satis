@@ -48,6 +48,7 @@ php composer-satis-builder buil ./satis.json ./composer.json --merge-repositorie
 ```
 
 ### 其他
+- 部分回源到github，可能需要输入账号密码，建议将id_rsa传到doker里~/.ssh下
 - 依赖较多的包，比如laraval要运行很久，这是正常现象。
 - 包索引文件较多时，php会报错，
 ```

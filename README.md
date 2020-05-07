@@ -35,7 +35,7 @@ php composer-satis-builder build ./satis.json ./composer.json --merge-requiremen
 
 # 同样需要指定satis.json,composer.json的位置
 #! /bin/bash
-php composer-satis-builder buil ./satis.json ./composer.json --merge-repositories=$1
+php composer-satis-builder buil ./satis.json  --merge-repositories=$1
 ~
 ```
 

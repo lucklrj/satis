@@ -60,3 +60,4 @@ ini_set("memory_limit", -1);# docker里已经默认加上了这一步，如果�
 ```
 - 手动运行创建新的索引脚本，没有像其他docker那样加到crontab里。
 - require-dev-dependencies=true时，会解析require-dev的包，有些应用包已经在github.com删除了，会导致建立索引失败，脚本自动退出（阿里云，腾讯云也有404的包)。
+- 创建索引，到最后可能会失败，根据php报错修改响应代码即可

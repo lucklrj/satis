@@ -31,7 +31,7 @@ php composer-satis-builder build ./satis.json ./composer.json --merge-requiremen
 ### 在satis里添加库(添加repositories部分，目前只支持git)：
 
 ```
-/app/composer-satis-builder/bin/merge-requirements git||http://your-gitlab/xx/yy.git
+/app/composer-satis-builder/bin/merge-requirements git::http://your-gitlab/xx/yy.git
 
 # 同样需要指定satis.json,composer.json的位置
 #! /bin/bash
